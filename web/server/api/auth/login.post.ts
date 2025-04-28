@@ -2,8 +2,7 @@ import bcrypt from 'bcryptjs';
 import {RefreshToken} from '~/server/models/RefreshToken';
 import {User} from '~/server/models/User';
 import {generateToken, sendRefreshToken} from '~/server/utils/jwt';
-import {LoginRequest, LoginResponse} from '~/server/types/AuthType';
-import { Role, UserStatus } from "~/server/types/TypesModel";
+import {LoginRequest} from '~/server/types/AuthType';
 import {errorHandlingTransfrom} from "~/server/utils/errorHandlingTransfrom";
 
 
@@ -48,19 +47,15 @@ export default defineEventHandler(async (event) => {
         sendRefreshToken(event, refreshToken);
 
         // Return access token in response
-        const { role, user_status, ...otherUserData } = user;
-        return <LoginResponse> {
+        const { id, full_name, username, email, created_at, updated_at, role, user_status, image_url } = user;
+        return {
             statusCode: 200,
             message: 'Berhasil Masuk!',
             access_token: accessToken,
             refresh_token: refreshToken,
             data: {
                 user: {
-                    full_name: user.full_name,
-                    username: user.username,
-                    email: user.email,
-                    roles: role as Role,
-                    user_status: user_status as UserStatus,
+                    id, full_name, username, email, created_at, updated_at, role, user_status, image_url
                 },
             },
         };

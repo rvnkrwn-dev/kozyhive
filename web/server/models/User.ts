@@ -31,24 +31,24 @@ export class User {
             where: {
                 email: email, // Ensure email is properly passed here
             },
-            select: {
-                id: true,
-                full_name: true,
-                username: true,
-                email: true,
-                password: true,
-                created_at: true,
-                updated_at: true,
-                role: true,
-                user_status: true,
-                image_url: true,
-            },
         });
     };
 
     static getUserById = (id: number) => {
         return prisma.user.findUnique({
             where: {id: id},
+            select: {
+                id: true,
+                full_name: true,
+                username: true,
+                email: true,
+                password: false,
+                created_at: true,
+                updated_at: true,
+                role: true,
+                user_status: true,
+                image_url: true,
+            }
         });
     };
 
