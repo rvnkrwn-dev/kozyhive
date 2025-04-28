@@ -2,14 +2,14 @@ class UserModel {
   final String fullName;
   final String username;
   final String email;
-  final List<String> roles; // Menyimpan roles dalam bentuk list
+  final String role; // Menyimpan roles dalam bentuk list
   final String status; // Status user (misalnya "active", "inactive")
 
   UserModel({
     required this.fullName,
     required this.username,
     required this.email,
-    required this.roles,
+    required this.role,
     required this.status,
   });
 
@@ -29,7 +29,7 @@ class UserModel {
       fullName: map['full_name'],
       username: map['username'],
       email: map['email'],
-      roles: roles, // Menyimpan roles yang sudah dipastikan
+      role: map['role'], // Menyimpan roles yang sudah dipastikan
       status: map['user_status'],
     );
   }
@@ -40,7 +40,7 @@ class UserModel {
       'full_name': fullName,
       'username': username,
       'email': email,
-      'roles': roles,
+      'role': role,
       'status': status,
     };
   }

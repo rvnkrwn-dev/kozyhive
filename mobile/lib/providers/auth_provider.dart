@@ -31,8 +31,7 @@ class AuthProvider with ChangeNotifier {
         _refreshToken = response.data['refresh_token'];
 
         await _storeTokens(_accessToken!, _refreshToken!);
-
-        _startAutoRefresh(); // Mulai auto refresh
+        _startAutoRefresh();
 
         notifyListeners();
         return {'message': response.data['message']};
@@ -91,19 +90,51 @@ class AuthProvider with ChangeNotifier {
           _refreshToken = response.data['refresh_token'];
         }
 
-        if (response.data['data']?['user'] != null) {
-          _user = UserModel.fromMap(response.data['data']['user']);
-        }
-
         await _storeTokens(_accessToken!, _refreshToken!);
+        _startAutoRefresh();
 
-        _startAutoRefresh(); // Reset timer dengan token baru
+        // Setelah berhasil refresh, langsung ambil data user terbaru
+        await getUser();
 
-        notifyListeners();
         return true;
       }
       return false;
     } on DioException catch (_) {
+      return false;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  // Fungsi ambil data user
+  Future<bool> getUser() async {
+    if (_accessToken == null) {
+      return false;
+    }
+
+    try {
+      final response = await DioClient.instance.get(
+        '/api/auth/user',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $_accessToken',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        _user = UserModel.fromMap(response.data['data']['user']);
+        print(_user);
+        notifyListeners();
+        return true;
+      } else {
+        return false;
+      }
+    } on DioException catch (e) {
+      // Kalau token invalid / expired, auto logout
+      if (e.response?.statusCode == 401) {
+        await logout();
+      }
       return false;
     } catch (_) {
       return false;
@@ -157,7 +188,7 @@ class AuthProvider with ChangeNotifier {
 
   // Mulai auto refresh token
   void _startAutoRefresh() {
-    _cancelAutoRefresh(); // pastikan tidak ada timer lama
+    _cancelAutoRefresh();
 
     if (_accessToken == null) return;
 
@@ -182,9 +213,9 @@ class AuthProvider with ChangeNotifier {
         return;
       }
 
-      // Tambahkan buffer biar gak expired mepet
-      durationSeconds -= 60; // refresh 1 menit sebelum expired
-      if (durationSeconds <= 0) durationSeconds = 10; // fallback minimal
+      // Tambahkan buffer 1 menit
+      durationSeconds -= 60;
+      if (durationSeconds <= 0) durationSeconds = 10;
 
       final refreshDuration = Duration(seconds: durationSeconds);
 
@@ -195,7 +226,7 @@ class AuthProvider with ChangeNotifier {
         final refreshed = await refreshTokenFromServer();
         if (!refreshed) {
           print('Gagal refresh token, logout otomatis');
-          await logout(); // force logout kalau gagal refresh
+          await logout();
         }
       });
 
