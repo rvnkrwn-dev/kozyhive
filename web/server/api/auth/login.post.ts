@@ -1,11 +1,10 @@
 import bcrypt from 'bcryptjs';
 import {RefreshToken} from '~/server/models/RefreshToken';
 import {User} from '~/server/models/User';
-// import {createLog} from '~/server/utils/atLog';
 import {generateToken, sendRefreshToken} from '~/server/utils/jwt';
 import {LoginRequest, LoginResponse, LogRequest} from '~/server/types/AuthType';
-// import {ActionLog} from '~/types/TypesModel';
-import {dataToEsm} from "@rollup/pluginutils";
+import { Role, UserStatus } from "~/server/types/TypesModel";
+
 
 export default defineEventHandler(async (event) => {
     try {
@@ -47,19 +46,24 @@ export default defineEventHandler(async (event) => {
         // Set refresh token in cookie
         sendRefreshToken(event, refreshToken);
 
-        
-
-        // await createLog(payload)
-
         // Return access token in response
+        const { role, user_status, ...otherUserData } = user;
         return <LoginResponse> {
-            code: 200,
+            StatusCode: 200,
             message: 'Berhasil Masuk!',
             access_token: accessToken,
+            refresh_token: refreshToken,
             data: {
-                user: userData,
+                user: {
+                    full_name: user.full_name,
+                    username: user.username,
+                    email: user.email,
+                    roles: role as Role,
+                    user_status: user_status as UserStatus,
+                },
             },
         };
+
     } catch (error: any) {
         console.error('Gagal Masuk:', error);
         return sendError(

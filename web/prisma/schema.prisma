@@ -55,9 +55,6 @@ model Log {
   user_id     Int
   user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   action      String
-  device      String
-  ip_address  String
-  location    String
   description String   @db.Text
   created_at  DateTime @default(now())
 }
@@ -69,4 +66,95 @@ enum Action {
   Perbarui
   Hapus
   Reset
+}
+
+model Address {
+  id            Int    @id @default(autoincrement())
+  street_name   String
+  street_number String
+  village_name  String
+  city          String
+  state         String
+  zip           String
+  longitude     String
+  latitude      String
+  kost          Kost   @relation(fields: [kostId], references: [id])
+  kostId        Int    @unique
+}
+
+model Kost {
+  id                 Int                @id @default(autoincrement())
+  slug               String             @unique
+  title              String
+  price              Float              @map("price")
+  type               Kost_type
+  ratings            Float              @map("ratings")
+  pengaturan_khusus  String?
+  address            Address[]
+  addressId          Int                @unique
+  facilitiesRoom     FacilitiesRoom[]
+  facilitiesRoomId   Int                @unique
+  facilitiesToilet   FacilitiesToilet[]
+  facilitiesToiletId Int                @unique
+  photos             Photo[]
+  wishlists          Wishlist[]
+  ulasan             Ulasan[]
+  owner              User               @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId            Int
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+}
+
+model FacilitiesRoom {
+  id     Int     @id @default(autoincrement())
+  ac     Boolean
+  meja   Boolean
+  lemari Boolean
+  kursi  Boolean
+  wifi   Boolean
+  kostId Int     @unique
+  kost   Kost    @relation(fields: [kostId], references: [id])
+}
+
+model FacilitiesToilet {
+  id          Int         @id @default(autoincrement())
+  kamar_mandi Kamar_mandi
+  shower      Boolean
+  kloset      Kloset_type
+  air_panas   Boolean
+  kostId      Int         @unique
+  kost        Kost        @relation(fields: [kostId], references: [id])
+}
+
+model Wishlist {
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+  kost   Kost @relation(fields: [kostId], references: [id])
+  kostId Int
+
+  @@unique([userId, kostId])
+}
+
+model Photo {
+  id          Int      @id @default(autoincrement())
+  image_url   String
+  description String?
+  kost        Kost?    @relation(fields: [kostId], references: [id])
+  kostId      Int?
+  ulasan      Ulasan[]
+  ulasanId    Int?
+  createdAt   DateTime @default(now())
+}
+
+model Ulasan {
+  id       Int    @id @default(autoincrement())
+  userId   Int
+  user     User   @relation(fields: [userId], references: [id])
+  rate     Int
+  comments String
+  photosId Int
+  photos   Photo? @relation(fields: [photosId], references: [id])
+  Kost     Kost?  @relation(fields: [kostId], references: [id])
+  kostId   Int?
 }

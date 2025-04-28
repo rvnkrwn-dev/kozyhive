@@ -142,9 +142,6 @@ exports.Prisma.LogScalarFieldEnum = {
   id: 'id',
   user_id: 'user_id',
   action: 'action',
-  device: 'device',
-  ip_address: 'ip_address',
-  location: 'location',
   description: 'description',
   created_at: 'created_at'
 };
@@ -173,9 +170,6 @@ exports.Prisma.RefreshTokenOrderByRelevanceFieldEnum = {
 
 exports.Prisma.LogOrderByRelevanceFieldEnum = {
   action: 'action',
-  device: 'device',
-  ip_address: 'ip_address',
-  location: 'location',
   description: 'description'
 };
 exports.Role = exports.$Enums.Role = {

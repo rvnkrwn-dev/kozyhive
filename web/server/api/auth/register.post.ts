@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import { defineEventHandler } from "h3";
 import { RegisterRequest, RegisterResponse } from "~/server/types/AuthType";
 import { User } from "~/server/models/User";
@@ -16,6 +17,9 @@ export default defineEventHandler(async (event) => {
             };
         }
 
+        // Hash password
+        const hashedPassword = bcrypt.hashSync(data.password, 10); // Hash dengan salt sebanyak 10 putaran
+
         // Generate username dari full_name
         const nameParts = data.full_name.split(" ");
         const baseUsername = nameParts.join(".").toLowerCase();
@@ -27,15 +31,14 @@ export default defineEventHandler(async (event) => {
             full_name: data.full_name,
             email: data.email,
             username: generatedUsername,
-            password: data.password,
+            password: hashedPassword, // Gunakan password yang sudah di-hash
         });
 
         // Mengatur status dan mengembalikan respons sukses
         setResponseStatus(event, 201);
         return {
             StatusCode: 201,
-            message: "Pengguna berhasil terdaftar!",
-            data: newUser,
+            message: "Pengguna berhasil terdaftar!"
         };
     } catch (error: any) {
         // Menangani error

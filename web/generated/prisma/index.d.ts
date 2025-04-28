@@ -3178,9 +3178,6 @@ export namespace Prisma {
     id: number | null
     user_id: number | null
     action: string | null
-    device: string | null
-    ip_address: string | null
-    location: string | null
     description: string | null
     created_at: Date | null
   }
@@ -3189,9 +3186,6 @@ export namespace Prisma {
     id: number | null
     user_id: number | null
     action: string | null
-    device: string | null
-    ip_address: string | null
-    location: string | null
     description: string | null
     created_at: Date | null
   }
@@ -3200,9 +3194,6 @@ export namespace Prisma {
     id: number
     user_id: number
     action: number
-    device: number
-    ip_address: number
-    location: number
     description: number
     created_at: number
     _all: number
@@ -3223,9 +3214,6 @@ export namespace Prisma {
     id?: true
     user_id?: true
     action?: true
-    device?: true
-    ip_address?: true
-    location?: true
     description?: true
     created_at?: true
   }
@@ -3234,9 +3222,6 @@ export namespace Prisma {
     id?: true
     user_id?: true
     action?: true
-    device?: true
-    ip_address?: true
-    location?: true
     description?: true
     created_at?: true
   }
@@ -3245,9 +3230,6 @@ export namespace Prisma {
     id?: true
     user_id?: true
     action?: true
-    device?: true
-    ip_address?: true
-    location?: true
     description?: true
     created_at?: true
     _all?: true
@@ -3343,9 +3325,6 @@ export namespace Prisma {
     id: number
     user_id: number
     action: string
-    device: string
-    ip_address: string
-    location: string
     description: string
     created_at: Date
     _count: LogCountAggregateOutputType | null
@@ -3373,9 +3352,6 @@ export namespace Prisma {
     id?: boolean
     user_id?: boolean
     action?: boolean
-    device?: boolean
-    ip_address?: boolean
-    location?: boolean
     description?: boolean
     created_at?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -3387,14 +3363,11 @@ export namespace Prisma {
     id?: boolean
     user_id?: boolean
     action?: boolean
-    device?: boolean
-    ip_address?: boolean
-    location?: boolean
     description?: boolean
     created_at?: boolean
   }
 
-  export type LogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "action" | "device" | "ip_address" | "location" | "description" | "created_at", ExtArgs["result"]["log"]>
+  export type LogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "action" | "description" | "created_at", ExtArgs["result"]["log"]>
   export type LogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -3408,9 +3381,6 @@ export namespace Prisma {
       id: number
       user_id: number
       action: string
-      device: string
-      ip_address: string
-      location: string
       description: string
       created_at: Date
     }, ExtArgs["result"]["log"]>
@@ -3786,9 +3756,6 @@ export namespace Prisma {
     readonly id: FieldRef<"Log", 'Int'>
     readonly user_id: FieldRef<"Log", 'Int'>
     readonly action: FieldRef<"Log", 'String'>
-    readonly device: FieldRef<"Log", 'String'>
-    readonly ip_address: FieldRef<"Log", 'String'>
-    readonly location: FieldRef<"Log", 'String'>
     readonly description: FieldRef<"Log", 'String'>
     readonly created_at: FieldRef<"Log", 'DateTime'>
   }
@@ -4197,9 +4164,6 @@ export namespace Prisma {
     id: 'id',
     user_id: 'user_id',
     action: 'action',
-    device: 'device',
-    ip_address: 'ip_address',
-    location: 'location',
     description: 'description',
     created_at: 'created_at'
   };
@@ -4243,9 +4207,6 @@ export namespace Prisma {
 
   export const LogOrderByRelevanceFieldEnum: {
     action: 'action',
-    device: 'device',
-    ip_address: 'ip_address',
-    location: 'location',
     description: 'description'
   };
 
@@ -4453,9 +4414,6 @@ export namespace Prisma {
     id?: IntFilter<"Log"> | number
     user_id?: IntFilter<"Log"> | number
     action?: StringFilter<"Log"> | string
-    device?: StringFilter<"Log"> | string
-    ip_address?: StringFilter<"Log"> | string
-    location?: StringFilter<"Log"> | string
     description?: StringFilter<"Log"> | string
     created_at?: DateTimeFilter<"Log"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -4465,9 +4423,6 @@ export namespace Prisma {
     id?: SortOrder
     user_id?: SortOrder
     action?: SortOrder
-    device?: SortOrder
-    ip_address?: SortOrder
-    location?: SortOrder
     description?: SortOrder
     created_at?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -4481,9 +4436,6 @@ export namespace Prisma {
     NOT?: LogWhereInput | LogWhereInput[]
     user_id?: IntFilter<"Log"> | number
     action?: StringFilter<"Log"> | string
-    device?: StringFilter<"Log"> | string
-    ip_address?: StringFilter<"Log"> | string
-    location?: StringFilter<"Log"> | string
     description?: StringFilter<"Log"> | string
     created_at?: DateTimeFilter<"Log"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -4493,9 +4445,6 @@ export namespace Prisma {
     id?: SortOrder
     user_id?: SortOrder
     action?: SortOrder
-    device?: SortOrder
-    ip_address?: SortOrder
-    location?: SortOrder
     description?: SortOrder
     created_at?: SortOrder
     _count?: LogCountOrderByAggregateInput
@@ -4512,9 +4461,6 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Log"> | number
     user_id?: IntWithAggregatesFilter<"Log"> | number
     action?: StringWithAggregatesFilter<"Log"> | string
-    device?: StringWithAggregatesFilter<"Log"> | string
-    ip_address?: StringWithAggregatesFilter<"Log"> | string
-    location?: StringWithAggregatesFilter<"Log"> | string
     description?: StringWithAggregatesFilter<"Log"> | string
     created_at?: DateTimeWithAggregatesFilter<"Log"> | Date | string
   }
@@ -4669,9 +4615,6 @@ export namespace Prisma {
 
   export type LogCreateInput = {
     action: string
-    device: string
-    ip_address: string
-    location: string
     description: string
     created_at?: Date | string
     user: UserCreateNestedOneWithoutLogInput
@@ -4681,18 +4624,12 @@ export namespace Prisma {
     id?: number
     user_id: number
     action: string
-    device: string
-    ip_address: string
-    location: string
     description: string
     created_at?: Date | string
   }
 
   export type LogUpdateInput = {
     action?: StringFieldUpdateOperationsInput | string
-    device?: StringFieldUpdateOperationsInput | string
-    ip_address?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutLogNestedInput
@@ -4702,9 +4639,6 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     user_id?: IntFieldUpdateOperationsInput | number
     action?: StringFieldUpdateOperationsInput | string
-    device?: StringFieldUpdateOperationsInput | string
-    ip_address?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -4713,18 +4647,12 @@ export namespace Prisma {
     id?: number
     user_id: number
     action: string
-    device: string
-    ip_address: string
-    location: string
     description: string
     created_at?: Date | string
   }
 
   export type LogUpdateManyMutationInput = {
     action?: StringFieldUpdateOperationsInput | string
-    device?: StringFieldUpdateOperationsInput | string
-    ip_address?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -4733,9 +4661,6 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     user_id?: IntFieldUpdateOperationsInput | number
     action?: StringFieldUpdateOperationsInput | string
-    device?: StringFieldUpdateOperationsInput | string
-    ip_address?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -5025,9 +4950,6 @@ export namespace Prisma {
     id?: SortOrder
     user_id?: SortOrder
     action?: SortOrder
-    device?: SortOrder
-    ip_address?: SortOrder
-    location?: SortOrder
     description?: SortOrder
     created_at?: SortOrder
   }
@@ -5041,9 +4963,6 @@ export namespace Prisma {
     id?: SortOrder
     user_id?: SortOrder
     action?: SortOrder
-    device?: SortOrder
-    ip_address?: SortOrder
-    location?: SortOrder
     description?: SortOrder
     created_at?: SortOrder
   }
@@ -5052,9 +4971,6 @@ export namespace Prisma {
     id?: SortOrder
     user_id?: SortOrder
     action?: SortOrder
-    device?: SortOrder
-    ip_address?: SortOrder
-    location?: SortOrder
     description?: SortOrder
     created_at?: SortOrder
   }
@@ -5403,9 +5319,6 @@ export namespace Prisma {
 
   export type LogCreateWithoutUserInput = {
     action: string
-    device: string
-    ip_address: string
-    location: string
     description: string
     created_at?: Date | string
   }
@@ -5413,9 +5326,6 @@ export namespace Prisma {
   export type LogUncheckedCreateWithoutUserInput = {
     id?: number
     action: string
-    device: string
-    ip_address: string
-    location: string
     description: string
     created_at?: Date | string
   }
@@ -5480,9 +5390,6 @@ export namespace Prisma {
     id?: IntFilter<"Log"> | number
     user_id?: IntFilter<"Log"> | number
     action?: StringFilter<"Log"> | string
-    device?: StringFilter<"Log"> | string
-    ip_address?: StringFilter<"Log"> | string
-    location?: StringFilter<"Log"> | string
     description?: StringFilter<"Log"> | string
     created_at?: DateTimeFilter<"Log"> | Date | string
   }
@@ -5637,9 +5544,6 @@ export namespace Prisma {
   export type LogCreateManyUserInput = {
     id?: number
     action: string
-    device: string
-    ip_address: string
-    location: string
     description: string
     created_at?: Date | string
   }
@@ -5666,9 +5570,6 @@ export namespace Prisma {
 
   export type LogUpdateWithoutUserInput = {
     action?: StringFieldUpdateOperationsInput | string
-    device?: StringFieldUpdateOperationsInput | string
-    ip_address?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -5676,9 +5577,6 @@ export namespace Prisma {
   export type LogUncheckedUpdateWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
     action?: StringFieldUpdateOperationsInput | string
-    device?: StringFieldUpdateOperationsInput | string
-    ip_address?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -5686,9 +5584,6 @@ export namespace Prisma {
   export type LogUncheckedUpdateManyWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
     action?: StringFieldUpdateOperationsInput | string
-    device?: StringFieldUpdateOperationsInput | string
-    ip_address?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }

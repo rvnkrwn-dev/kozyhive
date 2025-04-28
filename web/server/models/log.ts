@@ -1,5 +1,5 @@
-import {prisma} from '~/server/config/db';
-import {LogRequest} from '~/types/AuthType';
+import {prisma} from '~/server/config/prisma';
+import {LogRequest} from '~/server/types/AuthType';
 
 export class Log {
     static createLog = async (data: LogRequest) => {
@@ -7,9 +7,6 @@ export class Log {
             data: {
                 user_id: data.user_id,
                 action: data.action,
-                device: data.device,
-                ip_address: data.ip_address,
-                location: data.location,
                 description: data.description,
             },
         });
@@ -28,9 +25,6 @@ export class Log {
             data: {
                 user_id: data.user_id,
                 action: data.action,
-                device: data.device,
-                ip_address: data.ip_address,
-                location: data.location,
                 description: data.description,
             },
             include: {

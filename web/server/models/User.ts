@@ -45,4 +45,66 @@ export class User {
             },
         });
     };
+
+    static getUserById = (id: number) => {
+        return prisma.user.findUnique({
+            where: {id: id},
+        });
+    };
+
+    static getAllUsers = async (page: number, pagesize: number) => {
+        const skip = (page - 1) * pagesize; // Hitung data yang dilewatkan
+        const take = pagesize; // Jumlah data per halaman
+
+        return prisma.user.findMany({
+            select: {
+                id: true,
+                full_name: true,
+                email: true,
+                password: false,
+                role: true,
+                user_status: true,
+                image_url: true,
+                created_at: true,
+                updated_at: true,
+            },
+            skip: skip,
+            take: take,
+        });
+    };
+
+
+    static countAllUsers = () => {
+        return prisma.user.count();
+    };
+
+
+    static deleteUser = (id: number) => {
+        return prisma.user.delete({
+            where: {id},
+        });
+    };
+
+    static countUsers = () => {
+        return prisma.user.count();
+    };
+
+    static searchUser = (search: string) => {
+        return prisma.user.findMany({
+            where: {
+                OR: [
+                    {
+                        full_name: {
+                            contains: search
+                        }
+                    },
+                    {
+                        email: {
+                            contains: search
+                        }
+                    }
+                ]
+            }
+        })
+    }
 }
