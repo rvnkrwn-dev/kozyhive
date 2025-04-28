@@ -27,6 +27,9 @@ model User {
   updated_at    DateTime       @updatedAt
   refresh_token RefreshToken[]
   log           Log[]
+  kost          Kost[]
+  whishlist     Wishlist[]
+  ulasan        Ulasan[]
 }
 
 enum Role {
@@ -66,4 +69,118 @@ enum Action {
   Perbarui
   Hapus
   Reset
+}
+
+model Address {
+  id            Int    @id @default(autoincrement())
+  street_name   String
+  street_number String
+  village_name  String
+  city          String
+  state         String
+  zip           String
+  longitude     String
+  latitude      String
+  kost          Kost   @relation(fields: [kost_id], references: [id])
+  kost_id       Int
+}
+
+model Kost {
+  id                  Int                @id @default(autoincrement())
+  slug                String             @unique
+  title               String
+  price               Float              @map("price")
+  type                Kost_type
+  ratings             Float              @map("ratings")
+  pengaturan_khusus   String?
+  address             Address[]
+  address_id          Int                @unique
+  facilitiesRoom      FacilitiesRoom[]
+  facilitiesRoom_id   Int                @unique
+  facilitiesToilet    FacilitiesToilet[]
+  facilitiesToilet_id Int                @unique
+  photos              Photo[]
+  wishlists           Wishlist[]
+  ulasan              Ulasan[]
+  owner               User               @relation(fields: [owner_id], references: [id], onDelete: Cascade)
+  owner_id            Int
+  created_at          DateTime           @default(now())
+  updated_at          DateTime           @updatedAt
+}
+
+enum Kost_type {
+  PUTRA
+  PUTRI
+  CAMPUR
+}
+
+enum Kamar_mandi {
+  NULL
+  DALAM
+  LUAR
+}
+
+enum Kloset_type {
+  NULL
+  DUDUK
+  JONGKOK
+}
+
+model FacilitiesRoom {
+  id         Int      @id @default(autoincrement())
+  ac         Boolean
+  meja       Boolean
+  lemari     Boolean
+  kursi      Boolean
+  wifi       Boolean
+  kost_id    Int      @unique
+  kost       Kost     @relation(fields: [kost_id], references: [id])
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model FacilitiesToilet {
+  id          Int         @id @default(autoincrement())
+  kamar_mandi Kamar_mandi
+  shower      Boolean
+  kloset      Kloset_type
+  air_panas   Boolean
+  kost_id     Int         @unique
+  kost        Kost        @relation(fields: [kost_id], references: [id])
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @updatedAt
+}
+
+model Wishlist {
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(fields: [user_id], references: [id])
+  user_id    Int
+  kost       Kost     @relation(fields: [kost_id], references: [id])
+  kost_id    Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Photo {
+  id          Int      @id @default(autoincrement())
+  image_url   String
+  description String?
+  kost        Kost?    @relation(fields: [kost_id], references: [id])
+  kost_id     Int?
+  ulasan      Ulasan[]
+  ulasan_id   Int?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+}
+
+model Ulasan {
+  id        Int    @id @default(autoincrement())
+  user_id   Int
+  user      User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  rate      Int
+  comments  String
+  photos_id Int
+  photos    Photo? @relation(fields: [photos_id], references: [id])
+  Kost      Kost?  @relation(fields: [kost_id], references: [id])
+  kost_id   Int?
 }

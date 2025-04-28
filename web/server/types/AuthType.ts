@@ -38,4 +38,27 @@ export interface LogRequest {
     action: ActionLog;
     description: string;
 }
-
+export interface AddressRequest {
+    street_name: string;
+    street_number: string;
+    village_name: string;
+    city: string;
+    state: string;
+    zip: string;
+    longitude: string;
+    latitude: string;
+    kost_id: number; // Foreign key untuk relasi dengan Kost
+}
+export interface AddressResponse {
+    id: number;
+    street_name: string;
+    street_number: string;
+    village_name: string;
+    city: string;
+    state: string;
+    zip: string;
+    longitude: string;
+    latitude: string;
+    kost_id: number; // Foreign key
+    kost_name: string; // Nama kost yang diambil dari relasi Kost
+}

@@ -28,3 +28,15 @@ export interface User {
     created_at: Date,
     updated_at: Date
 }
+export interface Address {
+    id: number;
+    street_name: string;
+    street_number: string;
+    village_name: string;
+    city: string;
+    state: string;
+    zip: string;
+    longitude: string;
+    latitude: string;
+    kost_id: number;
+}
