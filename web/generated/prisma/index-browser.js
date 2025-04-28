@@ -146,6 +146,85 @@ exports.Prisma.LogScalarFieldEnum = {
   created_at: 'created_at'
 };
 
+exports.Prisma.AddressScalarFieldEnum = {
+  id: 'id',
+  street_name: 'street_name',
+  street_number: 'street_number',
+  village_name: 'village_name',
+  city: 'city',
+  state: 'state',
+  zip: 'zip',
+  longitude: 'longitude',
+  latitude: 'latitude',
+  kost_id: 'kost_id'
+};
+
+exports.Prisma.KostScalarFieldEnum = {
+  id: 'id',
+  slug: 'slug',
+  title: 'title',
+  price: 'price',
+  type: 'type',
+  ratings: 'ratings',
+  pengaturan_khusus: 'pengaturan_khusus',
+  address_id: 'address_id',
+  facilitiesRoom_id: 'facilitiesRoom_id',
+  facilitiesToilet_id: 'facilitiesToilet_id',
+  owner_id: 'owner_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.FacilitiesRoomScalarFieldEnum = {
+  id: 'id',
+  ac: 'ac',
+  meja: 'meja',
+  lemari: 'lemari',
+  kursi: 'kursi',
+  wifi: 'wifi',
+  kost_id: 'kost_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.FacilitiesToiletScalarFieldEnum = {
+  id: 'id',
+  kamar_mandi: 'kamar_mandi',
+  shower: 'shower',
+  kloset: 'kloset',
+  air_panas: 'air_panas',
+  kost_id: 'kost_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.WishlistScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  kost_id: 'kost_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.PhotoScalarFieldEnum = {
+  id: 'id',
+  image_url: 'image_url',
+  description: 'description',
+  kost_id: 'kost_id',
+  ulasan_id: 'ulasan_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.UlasanScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  rate: 'rate',
+  comments: 'comments',
+  photos_id: 'photos_id',
+  kost_id: 'kost_id'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -172,6 +251,32 @@ exports.Prisma.LogOrderByRelevanceFieldEnum = {
   action: 'action',
   description: 'description'
 };
+
+exports.Prisma.AddressOrderByRelevanceFieldEnum = {
+  street_name: 'street_name',
+  street_number: 'street_number',
+  village_name: 'village_name',
+  city: 'city',
+  state: 'state',
+  zip: 'zip',
+  longitude: 'longitude',
+  latitude: 'latitude'
+};
+
+exports.Prisma.KostOrderByRelevanceFieldEnum = {
+  slug: 'slug',
+  title: 'title',
+  pengaturan_khusus: 'pengaturan_khusus'
+};
+
+exports.Prisma.PhotoOrderByRelevanceFieldEnum = {
+  image_url: 'image_url',
+  description: 'description'
+};
+
+exports.Prisma.UlasanOrderByRelevanceFieldEnum = {
+  comments: 'comments'
+};
 exports.Role = exports.$Enums.Role = {
   ADMIN: 'ADMIN',
   USER: 'USER',
@@ -184,10 +289,35 @@ exports.UserStatus = exports.$Enums.UserStatus = {
   INACTIVE: 'INACTIVE'
 };
 
+exports.Kost_type = exports.$Enums.Kost_type = {
+  PUTRA: 'PUTRA',
+  PUTRI: 'PUTRI',
+  CAMPUR: 'CAMPUR'
+};
+
+exports.Kamar_mandi = exports.$Enums.Kamar_mandi = {
+  NULL: 'NULL',
+  DALAM: 'DALAM',
+  LUAR: 'LUAR'
+};
+
+exports.Kloset_type = exports.$Enums.Kloset_type = {
+  NULL: 'NULL',
+  DUDUK: 'DUDUK',
+  JONGKOK: 'JONGKOK'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   RefreshToken: 'RefreshToken',
-  Log: 'Log'
+  Log: 'Log',
+  Address: 'Address',
+  Kost: 'Kost',
+  FacilitiesRoom: 'FacilitiesRoom',
+  FacilitiesToilet: 'FacilitiesToilet',
+  Wishlist: 'Wishlist',
+  Photo: 'Photo',
+  Ulasan: 'Ulasan'
 };
 
 /**
