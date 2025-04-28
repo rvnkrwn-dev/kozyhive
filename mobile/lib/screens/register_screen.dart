@@ -1,3 +1,4 @@
+// lib/screens/register_screen.dart
 import 'package:flutter/material.dart';
 import 'package:mobile/providers/auth_provider.dart';
 import 'package:mobile/screens/login_screen.dart';
@@ -200,7 +201,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: ElevatedButton(
                     onPressed:
                         _agreeTerms
-                            ? () {
+                            ? () async {
                               String email = _emailController.text.trim();
                               String name = _nameController.text.trim();
                               String password = _passwordController.text;
@@ -212,10 +213,50 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   name.isNotEmpty &&
                                   password == confirmPassword) {
                                 // Semua validasi lolos -> panggil register
-                                AuthProvider.register(name, email, password);
+                                var result = await AuthProvider.register(
+                                  name,
+                                  email,
+                                  password,
+                                );
+
+                                // Show Snackbar based on the result
+                                if (result.containsKey('message')) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(result['message']!),
+                                      backgroundColor: Colors.green,
+                                    ),
+                                  );
+                                  // Navigate to login screen after successful registration
+                                  Future.delayed(
+                                    const Duration(seconds: 2),
+                                    () {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => LoginScreen(),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  print(result);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(result['error']['message']),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                }
                               } else {
-                                // Validasi gagal -> kasih feedback ke user
-                                print('Tolong isi semua field dengan benar.');
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'Tolong isi semua field dengan benar.',
+                                    ),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
                               }
                             }
                             : null,
