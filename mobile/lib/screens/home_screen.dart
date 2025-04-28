@@ -41,7 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
     _user = authProvider.user;
     setState(() {
       _isLoggedIn = _user != null && _user!.username.isNotEmpty;
-      print(_user);
     });
   }
 
