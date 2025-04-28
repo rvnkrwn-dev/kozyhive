@@ -1606,7 +1606,7 @@ export declare function getPrismaClient(config: GetPrismaClientConfig): {
          */
         $transaction(input: any, options?: any): Promise<any>;
         /**
-         * Runs the middleware over params before executing a request
+         * Runs the middlewares over params before executing a request
          * @param internalParams
          * @returns
          */

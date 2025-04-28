@@ -311,7 +311,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\HP PAVILION\\Videos\\kozyhive\\web\\generated\\prisma",
+      "value": "/Users/rvnkrwn-dev/Documents/PROJECT BESAR/kozyhive/web/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -320,12 +320,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "darwin-arm64",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\HP PAVILION\\Videos\\kozyhive\\web\\prisma\\schema.prisma",
+    "sourceFilePath": "/Users/rvnkrwn-dev/Documents/PROJECT BESAR/kozyhive/web/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -339,11 +339,12 @@ const config = {
     "db"
   ],
   "activeProvider": "mysql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "mysql://root@localhost:3306/kozyhive_db"
+        "value": null
       }
     }
   },
