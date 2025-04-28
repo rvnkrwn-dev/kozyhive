@@ -3,23 +3,45 @@ import { PhotoRequest, PhotoResponse } from "~/server/types/AuthType";
 
 export class Photo {
     // Create a new Photo
-    static async create(data: PhotoRequest): Promise<PhotoResponse> {
-        const newPhoto = await prisma.photo.create({
+    // static async create(data: PhotoRequest): Promise<PhotoResponse> {
+    //     const newPhoto = await prisma.photo.create({
+    //         data: {
+    //             image_url: data.image_url,
+    //             description: data.description,
+    //             kost_id: data.kost_id,
+    //         },
+    //     });
+    //
+    //     return {
+    //         id: newPhoto.id,
+    //         image_url: newPhoto.image_url,
+    //         description: newPhoto.description,
+    //         kost_id: newPhoto.kost_id,
+    //         created_at: newPhoto.created_at,
+    //         updated_at: newPhoto.updated_at,
+    //     };
+    // }
+
+    static async create(data: any) {
+        if (!data.image_url) {
+            throw new Error("URL gambar harus disertakan.");
+        }
+
+        // Validasi relasi
+        if (!data.kost_id && !data.ulasan_id) {
+            throw new Error("Kost ID atau Ulasan ID harus disediakan.");
+        }
+
+        const photo = await prisma.photo.create({
             data: {
                 image_url: data.image_url,
-                description: data.description,
-                kost_id: data.kost_id,
+                description: data.description ?? null,
+                kost_id: data.kost_id ?? null, // Relasi Kost jika tersedia
+                ulasan_id: data.ulasan_id ?? null, // Relasi Ulasan jika tersedia
             },
         });
 
-        return {
-            id: newPhoto.id,
-            image_url: newPhoto.image_url,
-            description: newPhoto.description,
-            kost_id: newPhoto.kost_id,
-            created_at: newPhoto.created_at,
-            updated_at: newPhoto.updated_at,
-        };
+        return photo;
     }
 
     // Get Photo by ID

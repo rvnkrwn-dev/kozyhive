@@ -4,7 +4,7 @@ const generateRefreshToken = (payload: any) => {
     const config = useRuntimeConfig();
     console.log(config.JWT_REFRESH_TOKEN);
     return jwt.sign(payload, config.JWT_REFRESH_TOKEN as string, {
-        expiresIn: '4h',
+        expiresIn: '7d',
     });
 };
 

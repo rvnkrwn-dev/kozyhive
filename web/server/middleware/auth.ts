@@ -21,7 +21,15 @@ export default defineEventHandler(async (event) => {
             '/api/auth/address',
             '/api/auth/address/:id',
             '/api/auth/address/search?q=:q',
-            '/api/auth/address?page=:page&pagesize=:pagesize'
+            '/api/auth/address?page=:page&pagesize=:pagesize',
+            '/api/auth/photo',
+            '/api/auth/photo/:id',
+            '/api/auth/photo/search?q=:q',
+            '/api/auth/photo?page=:page&pagesize=:pagesize',
+            '/api/auth/ulasan',
+            '/api/auth/ulasan/:id',
+            '/api/auth/ulasan/search?q=:q',
+            '/api/auth/ulasan?page=:page&pagesize=:pagesize'
         ];
 
         // Cek apakah endpoint cocok dengan middleware
@@ -59,12 +67,10 @@ export default defineEventHandler(async (event) => {
         // Ambil user berdasarkan ID
         try {
             const userId = decoded.id;
-            console.log("Decoded User ID:", userId);
 
             const user = await User.getUserById(userId);
 
             if (!user) {
-                console.error("User tidak ditemukan di database.");
                 return sendError(event, createError({
                     statusCode: 404,
                     statusMessage: 'User not found'
@@ -73,16 +79,13 @@ export default defineEventHandler(async (event) => {
 
             // Tambahkan user ke context auth
             event.context.auth = { user: user };
-            console.log("User berhasil ditambahkan ke context:", user);
         } catch (error) {
-            console.error("Error saat mengambil user dari database:", error);
             return sendError(event, createError({
                 statusCode: 500,
                 statusMessage: 'Internal Server Error'
             }));
         }
     } catch (e) {
-        console.error("Unexpected error in middleware:", e);
         return sendError(event, createError({
             statusCode: 500,
             statusMessage: 'Internal Server Error'

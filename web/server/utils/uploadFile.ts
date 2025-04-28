@@ -1,5 +1,5 @@
 import {Readable} from 'stream';
-import cloudinary from '~/server/utils/cloud';
+import cloudinary from './cloud';
 
 // Tipe data untuk parameter yang digunakan pada upload file
 interface UploadFileOptions {
@@ -33,7 +33,7 @@ export const uploadFile = async ({fileBuffer, filename, mimeType}: UploadFileOpt
                     resource_type: 'auto',  // Cloudinary will auto-detect the file type
                     public_id: filename,    // You can make this dynamic or add a unique timestamp
                     format: mimeType.split('/')[1] || 'jpg',// Extract format from mime type
-                    asset_folder: 'kozy-hive' // folder
+                    asset_folder: 'Kozy_HIve' // folder
                 },
                 (error, result) => {
                     if (error) {

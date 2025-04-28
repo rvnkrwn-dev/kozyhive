@@ -1,82 +1,73 @@
-import { uploadFile } from '~/server/utils/uploadFile';
-import { PhotoRequest } from '~/server/types/AuthType';
-import { Photo } from '~/server/models/Photo';
-import { LogRequest } from '~/server/types/AuthType';
-import { ActionLog } from '~/server/types/TypesModel';
-
-function generateUniqueSlug(imageUrl: string) {
-    const slug = imageUrl.split('/').pop()?.split('.')[0]?.toLowerCase();
-    return `${slug}-${Date.now()}`;
-}
+import { Photo } from "~/server/models/Photo";
+import { uploadFile } from "~/server/utils/uploadFile";
+import {filename} from "pathe/utils";
 
 export default defineEventHandler(async (event) => {
     try {
-        // Periksa autentikasi pengguna
         const user = event.context.auth?.user;
         if (!user) {
             setResponseStatus(event, 401);
-            return { code: 401, message: 'User not authenticated.' };
+            return { code: 401, message: "User not authenticated." };
         }
 
-        // Baca data formulir multipart
         const formData = await readMultipartFormData(event);
-
         if (!formData) {
             setResponseStatus(event, 400);
-            return { code: 400, message: 'No form data provided.' };
+            return { code: 400, message: "No form data provided." };
         }
 
-        const payload: PhotoRequest = {
-            image_url: '',
-            description: '',
-            kost_id: undefined,
-        };
-
-        let uploadResult;
+        let description = '';
+        let kost_id = null;
+        const secureUrls: string[] = []; // Untuk menyimpan URL secure
 
         for (const field of formData) {
-            const { name, data, filename, type } = field;
+            const { name, data, filename } = field;
 
-            if (typeof name !== 'string') return;
-
-            if (filename) {
+            if (name === "file" && filename) {
                 const fileBuffer = data as Buffer;
-                const fileName = generateUniqueSlug(filename);
-
-                // Unggah file menggunakan utilitas upload
-                uploadResult = await uploadFile(<any>{
-                    fileBuffer,
-                    filename: fileName,
-                    mimeType: type,
-                });
-
-                payload.image_url = uploadResult.url;
-            } else if (data) {
-                switch (name) {
-                    case 'description':
-                        payload.description = data.toString('utf-8');
-                        break;
-                    case 'kost_id':
-                        payload.kost_id = parseInt(data.toString('utf-8'), 10);
-                        break;
-                }
+                const uploadResult = await uploadFile({mimeType: "", fileBuffer, filename });
+                secureUrls.push(uploadResult.secure_url); // Simpan URL aman
+            } else if (name === "description") {
+                description = data.toString("utf-8");
+            } else if (name === "kost_id") {
+                kost_id = parseInt(data.toString("utf-8"), 10);
             }
         }
 
-        // Simpan data ke database
-        const photo = await Photo.create(payload);
+        // Validasi
+        if (secureUrls.length === 0) {
+            return { code: 400, message: "Setidaknya satu file gambar harus disertakan." };
+        }
 
-        setResponseStatus(event,201)
+        if (!kost_id) {
+            return { code: 400, message: "Kost ID harus disediakan." };
+        }
 
-        return { code: 201, message: 'Photo berhasil ditambahkan', data: photo };
+        // Menyimpan ke database
+        const photoRecords = await Promise.all(
+            secureUrls.map((url) =>
+                Photo.create({
+                    data: {
+                        image_url: url,
+                        description: description || null,
+                        kost_id,
+                    },
+                })
+            )
+        );
 
-    } catch (error: any) {
-        // Menangani error
-        const {statusCode, message} = errorHandlingTransfrom(error);
-        setResponseStatus(event, statusCode);
         return {
-            statusCode,
-            message,
+            code: 201,
+            message: "Foto berhasil ditambahkan",
+            data: photoRecords,
         };
+    } catch (error: any) {
+        return sendError(
+            event,
+            createError({
+                statusCode: 500,
+                statusMessage: error?.message || "Internal Server Error",
+            })
+        );
     }
 });

@@ -85,26 +85,84 @@ export interface KostRequest {
     slug: string;
     title: string;
     price: number;
-    type: KostType;
+    type: KostType; // Menggunakan enum dari TypeScript
     ratings: number;
-    pengaturan_khusus?: string | null;
-    address_id: number;
-    facilitiesRoom_id: number;
-    facilitiesToilet_id: number;
+    pengaturan_khusus: string | null;
     owner_id: number;
+    address: {
+        street_name: string;
+        street_number: string;
+        village_name: string;
+        city: string;
+        state: string;
+        zip: string;
+        longitude: string;
+        latitude: string;
+    };
+    facilitiesRoom: {
+        ac: boolean;
+        meja: boolean;
+        lemari: boolean;
+        kursi: boolean;
+        wifi: boolean;
+    };
+    facilitiesToilet: {
+        kamar_mandi: "DALAM" | "LUAR";
+        shower: boolean;
+        kloset: "DUDUK" | "JONGKOK";
+        air_panas: boolean;
+    };
 }
+
 export interface KostResponse {
-    id: number;
-    slug: string;
-    title: string;
-    price: number;
-    type: string;
-    ratings?: number;
-    pengaturan_khusus?: string | null;
-    owner_id: number;
-    created_at: Date;
-    updated_at: Date;
+    kost: {
+        id: number;
+        slug: string;
+        title: string;
+        price: number;
+        type: KostType;
+        ratings: number | null;
+        pengaturan_khusus: string | null;
+        owner_id: number;
+        created_at: Date;
+        updated_at: Date;
+    };
+    address: {
+        id: number;
+        street_name: string;
+        street_number: string;
+        village_name: string;
+        city: string;
+        state: string;
+        zip: string;
+        longitude: string;
+        latitude: string;
+        kost_id: number;
+    };
+    facilitiesRoom: {
+        id: number;
+        ac: boolean;
+        meja: boolean;
+        lemari: boolean;
+        kursi: boolean;
+        wifi: boolean;
+        kost_id: number;
+        created_at: Date;
+        updated_at: Date;
+    };
+    facilitiesToilet: {
+        id: number;
+        kamar_mandi: string;
+        shower: boolean;
+        kloset: string;
+        air_panas: boolean;
+        kost_id: number;
+        created_at: Date;
+        updated_at: Date;
+    };
 }
+
+
 export interface FacilitiesRoomRequest {
     ac: boolean;
     meja: boolean;

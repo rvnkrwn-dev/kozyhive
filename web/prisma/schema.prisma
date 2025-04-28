@@ -86,26 +86,23 @@ model Address {
 }
 
 model Kost {
-  id                  Int                @id @default(autoincrement())
-  slug                String             @unique
-  title               String
-  price               Float              @map("price")
-  type                Kost_type
-  ratings             Float              @map("ratings")
-  pengaturan_khusus   String?
-  address             Address[]
-  address_id          Int                @unique
-  facilitiesRoom      FacilitiesRoom[]
-  facilitiesRoom_id   Int                @unique
-  facilitiesToilet    FacilitiesToilet[]
-  facilitiesToilet_id Int                @unique
-  photos              Photo[]
-  wishlists           Wishlist[]
-  ulasan              Ulasan[]
-  owner               User               @relation(fields: [owner_id], references: [id], onDelete: Cascade)
-  owner_id            Int
-  created_at          DateTime           @default(now())
-  updated_at          DateTime           @updatedAt
+  id                Int                @id @default(autoincrement())
+  slug              String             @unique
+  title             String
+  price             Float
+  type              Kost_type
+  ratings           Float
+  pengaturan_khusus String?
+  address           Address[]
+  facilitiesRoom    FacilitiesRoom[]
+  facilitiesToilet  FacilitiesToilet[]
+  photos            Photo[]
+  wishlists         Wishlist[]
+  ulasan            Ulasan[]
+  owner             User               @relation(fields: [owner_id], references: [id], onDelete: Cascade)
+  owner_id          Int
+  created_at        DateTime           @default(now())
+  updated_at        DateTime           @updatedAt
 }
 
 enum Kost_type {
@@ -167,20 +164,20 @@ model Photo {
   description String?
   kost        Kost?    @relation(fields: [kost_id], references: [id])
   kost_id     Int?
-  ulasan      Ulasan[]
+  ulasan      Ulasan?  @relation(fields: [ulasan_id], references: [id])
   ulasan_id   Int?
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
 }
 
 model Ulasan {
-  id        Int    @id @default(autoincrement())
+  id        Int     @id @default(autoincrement())
   user_id   Int
-  user      User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user      User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
   rate      Int
   comments  String
   photos_id Int
-  photos    Photo? @relation(fields: [photos_id], references: [id])
-  Kost      Kost?  @relation(fields: [kost_id], references: [id])
+  Kost      Kost?   @relation(fields: [kost_id], references: [id])
   kost_id   Int?
+  photo     Photo[]
 }

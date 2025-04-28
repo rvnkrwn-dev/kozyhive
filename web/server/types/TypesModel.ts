@@ -17,9 +17,9 @@ export enum ActionLog {
     Reset = 'Reset'
 }
 export enum KostType {
-    PUTRA = 'PUTRA',
-    PUTRI = 'PUTRI',
-    CAMPUR = 'CAMPUR',
+    PUTRA = "PUTRA",
+    PUTRI = "PUTRI",
+    CAMPUR = "CAMPUR",
 }
 export enum Kamar_mandi {
     NULL = 'NULL',

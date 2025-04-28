@@ -8,10 +8,10 @@ export class User {
             data: {
                 full_name: data.full_name,
                 email: data.email,
-                username: data.username, // Pastikan ini dihasilkan sebelumnya
+                username: data.username,
                 password: data.password,
-                role: Role.USER, // Misalkan, peran default pengguna adalah "USER"
-                user_status: UserStatus.ACTIVE, // Misalkan, status default adalah "ACTIVE"
+                role: Role.USER,
+                user_status: UserStatus.ACTIVE,
             }
         });
 
