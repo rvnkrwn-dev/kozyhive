@@ -1,9 +1,10 @@
 // lib/services/dio_client.dart
 import 'package:dio/dio.dart';
+import 'package:mobile/constants/variables.dart';
 
 class DioClient {
   static final Dio _dio = Dio(BaseOptions(
-    baseUrl: 'http://localhost:3000',
+    baseUrl: AppConstants.baseUrl,
     headers: {
       'Content-Type': 'application/json',
     },

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/providers/auth_provider.dart';
 import 'package:mobile/screens/login_screen.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -213,11 +214,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   name.isNotEmpty &&
                                   password == confirmPassword) {
                                 // Semua validasi lolos -> panggil register
-                                var result = await AuthProvider.register(
-                                  name,
-                                  email,
-                                  password,
-                                );
+                                var result = await context
+                                    .read<AuthProvider>()
+                                    .register(name, email, password);
 
                                 // Show Snackbar based on the result
                                 if (result.containsKey('message')) {
@@ -299,7 +298,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               },
                           },
                       child: const Text(
-                        'Daftar',
+                        'Masuk',
                         style: TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.bold,

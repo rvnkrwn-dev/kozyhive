@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/layouts/default.dart';
 import 'package:mobile/providers/auth_provider.dart';
 import 'package:mobile/screens/register_screen.dart';
 import 'package:provider/provider.dart';
@@ -48,9 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: _emailController,
                   decoration: InputDecoration(
                     hintText: 'Enter your email',
-                    hintStyle: TextStyle(
-                      color: Colors.black54
-                    ),
+                    hintStyle: TextStyle(color: Colors.black54),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -75,9 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   obscureText: true,
                   decoration: InputDecoration(
                     hintText: 'Enter your password',
-                    hintStyle: TextStyle(
-                      color: Colors.black54
-                    ),
+                    hintStyle: TextStyle(color: Colors.black54),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -104,55 +101,46 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 48,
                   child: ElevatedButton(
                     onPressed: () async {
-                              String email = _emailController.text.trim();
-                              String password = _passwordController.text;
+                      String email = _emailController.text.trim();
+                      String password = _passwordController.text;
 
-                              // Cek validasi
-                              if (email.isNotEmpty &&
-                                  password.isNotEmpty) {
-                                // Semua validasi lolos -> panggil register
-                                var result = await context.read<AuthProvider>().login(email, password);
+                      // Cek validasi
+                      if (email.isNotEmpty && password.isNotEmpty) {
+                        // Semua validasi lolos -> panggil register
+                        var result = await context.read<AuthProvider>().login(
+                          email,
+                          password,
+                        );
 
-                                // Show Snackbar based on the result
-                                if (result.containsKey('message')) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(result['message']!),
-                                      backgroundColor: Colors.green,
-                                    ),
-                                  );
-                                  // Navigate to login screen after successful registration
-                                  Future.delayed(
-                                    const Duration(seconds: 2),
-                                    () {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => LoginScreen(),
-                                        ),
-                                      );
-                                    },
-                                  );
-                                } else {
-                                  print(result);
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(result['error']['message']),
-                                      backgroundColor: Colors.red,
-                                    ),
-                                  );
-                                }
-                              } else {  
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      'Tolong isi semua field dengan benar.',
-                                    ),
-                                    backgroundColor: Colors.red,
-                                  ),
-                                );
-                              }
-                            },
+                        // Show Snackbar based on the result
+                        if (result.containsKey('message')) {
+                          if(mounted) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DefaultLayout(),
+                              ),
+                            );
+                          }
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(result['error']['message']),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Tolong isi semua field dengan benar.',
+                            ),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                       foregroundColor: Colors.white,
@@ -216,11 +204,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(color: Colors.black54),
                     ),
                     GestureDetector(
-                      onTap: () => {
-                        if(mounted) {
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RegisterScreen() ))
-                        }
-                      },
+                      onTap:
+                          () => {
+                            if (mounted)
+                              {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => RegisterScreen(),
+                                  ),
+                                ),
+                              },
+                          },
                       child: const Text(
                         'Daftar',
                         style: TextStyle(
