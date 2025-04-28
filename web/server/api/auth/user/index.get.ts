@@ -4,8 +4,6 @@ import {errorHandlingTransfrom} from "~/server/utils/errorHandlingTransfrom";
 export default defineEventHandler(async (event) => {
     try {
         const user = event.context.auth?.user;
-        console.log('User:', user);
-        console.log('User ID:', user?.id);
 
         if (!user.id || isNaN(user.id)) {
             setResponseStatus(event, 400);

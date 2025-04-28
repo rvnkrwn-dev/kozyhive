@@ -48,7 +48,7 @@ export default defineEventHandler(async (event) => {
         sendRefreshToken(event, refreshToken);
 
         // Return access token in response
-        const { role, user_status, ...otherUserData } = user;
+        const { id, full_name, username, email, created_at, updated_at, role, user_status, image_url } = user;
         return <LoginResponse> {
             statusCode: 200,
             message: 'Berhasil Masuk!',
@@ -56,11 +56,7 @@ export default defineEventHandler(async (event) => {
             refresh_token: refreshToken,
             data: {
                 user: {
-                    full_name: user.full_name,
-                    username: user.username,
-                    email: user.email,
-                    roles: role as Role,
-                    user_status: user_status as UserStatus,
+                    id, full_name, username, email, created_at, updated_at, role, user_status, image_url
                 },
             },
         };
