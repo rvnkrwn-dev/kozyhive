@@ -1,4 +1,4 @@
-import { Address } from '~/server/models/Address';
+import { FacilitiesToilet } from '~/server/models/FacilitiesToilet';
 import {errorHandlingTransfrom} from "~/server/utils/errorHandlingTransfrom";
 
 export default defineEventHandler(async (event) => {
@@ -12,10 +12,10 @@ export default defineEventHandler(async (event) => {
     try {
         const id = parseInt(event.context.params?.id as string, 10);
 
-        const address = await Address.delete(id);
+        const address = await FacilitiesToilet.delete(id);
         return {
             statusCode: 200,
-            message: 'Address berhasil dihapus!',
+            message: 'FacilitiesToilet berhasil dihapus!',
             data: address,
         };
 

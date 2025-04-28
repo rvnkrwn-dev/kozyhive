@@ -2,8 +2,9 @@ import bcrypt from 'bcryptjs';
 import {RefreshToken} from '~/server/models/RefreshToken';
 import {User} from '~/server/models/User';
 import {generateToken, sendRefreshToken} from '~/server/utils/jwt';
-import {LoginRequest, LoginResponse, LogRequest} from '~/server/types/AuthType';
+import {LoginRequest, LoginResponse} from '~/server/types/AuthType';
 import { Role, UserStatus } from "~/server/types/TypesModel";
+import {errorHandlingTransfrom} from "~/server/utils/errorHandlingTransfrom";
 
 
 export default defineEventHandler(async (event) => {
@@ -21,14 +22,14 @@ export default defineEventHandler(async (event) => {
 
         if (!user) {
             setResponseStatus(event, 400);
-            return { code: 400, message: 'Kesalahan Kredensial' };
+            return { statusCode: 401, message: 'Kesalahan Kredensial' };
         }
 
         // Check password
         const isPasswordValid = bcrypt.compareSync(data.password, user.password);
         if (!isPasswordValid) {
-            setResponseStatus(event, 400);
-            return { code: 400, message: 'Kesalahan Kredensial' };
+            setResponseStatus(event, 401);
+            return { statusCode: 401, message: 'Kesalahan Kredensial' };
         }
 
         // Generate tokens
@@ -49,7 +50,7 @@ export default defineEventHandler(async (event) => {
         // Return access token in response
         const { role, user_status, ...otherUserData } = user;
         return <LoginResponse> {
-            StatusCode: 200,
+            statusCode: 200,
             message: 'Berhasil Masuk!',
             access_token: accessToken,
             refresh_token: refreshToken,
@@ -65,10 +66,12 @@ export default defineEventHandler(async (event) => {
         };
 
     } catch (error: any) {
-        console.error('Gagal Masuk:', error);
-        return sendError(
-            event,
-            createError({ statusCode: 500, statusMessage: error.message || 'Internal Server Error' }),
-        );
+        // Menangani error
+        const {statusCode, message} = errorHandlingTransfrom(error);
+        setResponseStatus(event, statusCode);
+        return {
+            statusCode,
+            message,
+        }
     }
 });

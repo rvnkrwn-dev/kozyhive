@@ -1,4 +1,5 @@
-import { Address } from '~/server/models/address';
+import { Address } from '~/server/models/Address';
+import {errorHandlingTransfrom} from "~/server/utils/errorHandlingTransfrom";
 
 export default defineEventHandler(async (event) => {
     // Check if user exists
@@ -6,7 +7,7 @@ export default defineEventHandler(async (event) => {
 
     if (!user) {
         setResponseStatus(event, 403);
-        return { code: 403, message: 'Pengguna tidak valid' };
+        return { statusCode: 403, message: 'Pengguna tidak valid' };
     }
 
     try {
@@ -20,14 +21,19 @@ export default defineEventHandler(async (event) => {
         };
 
         const address = await Address.create(newData);
-
+        setResponseStatus(event,201)
         return {
-            code: 201,
+            statusCode: 201,
             message: 'Address berhasil ditambahkan!',
             data: address,
         };
     } catch (error: any) {
-        console.error('Error creating Address:', error);
-        return sendError(event, createError({ statusCode: 500, statusMessage: 'Internal Server Error' }));
+        // Menangani error
+        const {statusCode, message} = errorHandlingTransfrom(error);
+        setResponseStatus(event, statusCode);
+        return {
+            statusCode,
+            message,
+        }
     }
 });

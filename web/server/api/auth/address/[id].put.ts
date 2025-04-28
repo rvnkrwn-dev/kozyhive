@@ -1,4 +1,5 @@
-import { Address } from '~/server/models/address';
+import { Address } from '~/server/models/Address';
+import {errorHandlingTransfrom} from "~/server/utils/errorHandlingTransfrom";
 
 export default defineEventHandler(async (event) => {
     // Check if user exists
@@ -6,7 +7,7 @@ export default defineEventHandler(async (event) => {
 
     if (!user) {
         setResponseStatus(event, 403);
-        return { code: 403, message: 'Pengguna tidak valid' };
+        return { statusCode: 403, message: 'Pengguna tidak valid' };
     }
 
     try {
@@ -17,11 +18,17 @@ export default defineEventHandler(async (event) => {
         const address = await Address.update(id, data);
 
         return {
-            code: 200,
+            statusCode: 200,
             message: 'Address berhasil diperbarui!',
             data: address,
         };
     } catch (error: any) {
-        return sendError(event, createError({ statusCode: 500, statusMessage: 'Internal Server Error' }));
+        // Menangani error
+        const {statusCode, message} = errorHandlingTransfrom(error);
+        setResponseStatus(event, statusCode);
+        return {
+            statusCode,
+            message,
+        }
     }
 });

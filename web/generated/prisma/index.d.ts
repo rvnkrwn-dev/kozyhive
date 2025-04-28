@@ -13039,7 +13039,6 @@ export namespace Prisma {
 
   export type FacilitiesRoomWhereUniqueInput = Prisma.AtLeast<{
     id?: number
-    kost_id?: number
     AND?: FacilitiesRoomWhereInput | FacilitiesRoomWhereInput[]
     OR?: FacilitiesRoomWhereInput[]
     NOT?: FacilitiesRoomWhereInput | FacilitiesRoomWhereInput[]
@@ -13048,10 +13047,11 @@ export namespace Prisma {
     lemari?: BoolFilter<"FacilitiesRoom"> | boolean
     kursi?: BoolFilter<"FacilitiesRoom"> | boolean
     wifi?: BoolFilter<"FacilitiesRoom"> | boolean
+    kost_id?: IntFilter<"FacilitiesRoom"> | number
     created_at?: DateTimeFilter<"FacilitiesRoom"> | Date | string
     updated_at?: DateTimeFilter<"FacilitiesRoom"> | Date | string
     kost?: XOR<KostScalarRelationFilter, KostWhereInput>
-  }, "id" | "kost_id">
+  }, "id">
 
   export type FacilitiesRoomOrderByWithAggregationInput = {
     id?: SortOrder

@@ -1,6 +1,7 @@
 import { RefreshToken } from '~/server/models/RefreshToken';
 import { addToBlacklist } from '~/server/utils/tokenBlacklist';
 import { deleteRefreshToken, verifyToken } from '~/server/utils/jwt';
+import {errorHandlingTransfrom} from "~/server/utils/errorHandlingTransfrom";
 
 export default defineEventHandler(async (event) => {
     try {
@@ -47,9 +48,12 @@ export default defineEventHandler(async (event) => {
         // Mengembalikan respons sukses
         return { code: 200, message: 'Berhasil keluar!' };
     } catch (error: any) {
-        return sendError(
-            event,
-            createError({ statusCode: 500, statusMessage: 'Internal Server Error' }),
-        );
+        // Menangani error
+        const {statusCode, message} = errorHandlingTransfrom(error);
+        setResponseStatus(event, statusCode);
+        return {
+            statusCode,
+            message,
+        }
     }
 });

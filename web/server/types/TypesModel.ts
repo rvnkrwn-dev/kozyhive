@@ -16,6 +16,21 @@ export enum ActionLog {
     Hapus = 'Hapus',
     Reset = 'Reset'
 }
+export enum KostType {
+    PUTRA = 'PUTRA',
+    PUTRI = 'PUTRI',
+    CAMPUR = 'CAMPUR',
+}
+export enum Kamar_mandi {
+    NULL = 'NULL',
+    DALAM = 'DALAM',
+    LUAR = 'LUAR',
+}
+export enum Kloset_type {
+    NULL = 'NULL',
+    DUDUK = 'DUDUK',
+    JONGKOK = 'JONGKOK',
+}
 export interface User {
     id: number,
     username: string,
