@@ -1,4 +1,5 @@
-import { Address } from '~/server/models/address';
+import { Address } from '~/server/models/Address';
+import {errorHandlingTransfrom} from "~/server/utils/errorHandlingTransfrom";
 
 export default defineEventHandler(async (event) => {
     // Check if user exists
@@ -6,24 +7,30 @@ export default defineEventHandler(async (event) => {
 
     if (!user) {
         setResponseStatus(event, 403);
-        return { code: 403, message: 'Pengguna tidak valid' };
+        return { statusCode: 403, message: 'Pengguna tidak valid' };
     }
 
     try {
         const id = parseInt(event.context.params?.id as string, 10);
-        const nik = await Address.getById(id);
+        const address = await Address.getById(id);
 
-        if (!nik) {
+        if (!address) {
             setResponseStatus(event, 404);
-            return { code: 404, message: 'Address tidak ditemukan' };
+            return { statusCode: 404, message: 'Address tidak ditemukan' };
         }
 
         return {
-            code: 200,
+            statusCode: 200,
             message: 'Address berhasil dikembalikan!',
-            data: nik,
+            data: address,
         };
     } catch (error: any) {
-        return sendError(event, createError({ statusCode: 500, statusMessage: 'Internal Server Error' }));
+        // Menangani error
+        const {statusCode, message} = errorHandlingTransfrom(error);
+        setResponseStatus(event, statusCode);
+        return {
+            statusCode,
+            message,
+        }
     }
 });

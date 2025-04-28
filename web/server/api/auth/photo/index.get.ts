@@ -1,4 +1,4 @@
-import { Address } from '~/server/models/Address';
+import { Photo } from '~/server/models/Photo';
 import {errorHandlingTransfrom} from "~/server/utils/errorHandlingTransfrom";
 
 export default defineEventHandler(async (event) => {
@@ -21,22 +21,22 @@ export default defineEventHandler(async (event) => {
             return { statusCode: 403, message: 'Halaman dan ukuran halaman harus berupa bilangan bulat positif.' };
         }
 
-        // Ambil data Address
-        const address = await Address.getAll(page, pagesize);
+        // Ambil data Photo
+        const address = await Photo.getAll(page, pagesize);
 
         // Hitung total halaman
-        const totalAddresss = await Address.countAll();
-        const totalPages = Math.ceil(totalAddresss / pagesize);
+        const totalPhotos = await Photo.countAll();
+        const totalPages = Math.ceil(totalPhotos / pagesize);
 
         // Buat URL untuk prev dan next
-        const baseUrl = "/api/auth/address";
+        const baseUrl = "/api/auth/photo";
         const prevPage = page > 1 ? `${baseUrl}?page=${page - 1}&pagesize=${pagesize}` : null;
         const nextPage = page < totalPages ? `${baseUrl}?page=${page + 1}&pagesize=${pagesize}` : null;
 
         // Return hasil data
         return {
             statusCode: 200,
-            message: 'Address berhasil dikembalikan!',
+            message: 'Photo berhasil dikembalikan!',
             data: address,
             totalPages,
             prev: prevPage,

@@ -133,7 +133,7 @@ model FacilitiesRoom {
   lemari     Boolean
   kursi      Boolean
   wifi       Boolean
-  kost_id    Int      @unique
+  kost_id    Int
   kost       Kost     @relation(fields: [kost_id], references: [id])
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt

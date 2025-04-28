@@ -1,4 +1,4 @@
-import { Address } from '~/server/models/Address';
+import { FacilitiesToilet } from '~/server/models/FacilitiesToilet';
 import {errorHandlingTransfrom} from "~/server/utils/errorHandlingTransfrom";
 
 export default defineEventHandler(async (event) => {
@@ -21,12 +21,12 @@ export default defineEventHandler(async (event) => {
             return { statusCode: 403, message: 'Halaman dan ukuran halaman harus berupa bilangan bulat positif.' };
         }
 
-        // Ambil data Address
-        const address = await Address.getAll(page, pagesize);
+        // Ambil data FacilitiesToilet
+        const address = await FacilitiesToilet.getAll(page, pagesize);
 
         // Hitung total halaman
-        const totalAddresss = await Address.countAll();
-        const totalPages = Math.ceil(totalAddresss / pagesize);
+        const totalFacilitiesToilets = await FacilitiesToilet.countAll();
+        const totalPages = Math.ceil(totalFacilitiesToilets / pagesize);
 
         // Buat URL untuk prev dan next
         const baseUrl = "/api/auth/address";
@@ -36,7 +36,7 @@ export default defineEventHandler(async (event) => {
         // Return hasil data
         return {
             statusCode: 200,
-            message: 'Address berhasil dikembalikan!',
+            message: 'FacilitiesToilet berhasil dikembalikan!',
             data: address,
             totalPages,
             prev: prevPage,

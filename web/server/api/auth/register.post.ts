@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import { defineEventHandler } from "h3";
 import { RegisterRequest, RegisterResponse } from "~/server/types/AuthType";
 import { User } from "~/server/models/User";
+import {errorHandlingTransfrom} from "~/server/utils/errorHandlingTransfrom";
 
 export default defineEventHandler(async (event) => {
     try {
@@ -12,7 +13,7 @@ export default defineEventHandler(async (event) => {
         if (!data.full_name || !data.email || !data.password) {
             setResponseStatus(event, 400);
             return {
-                StatusCode: 400,
+                statusCode: 400,
                 message: "Harap berikan semua kolom yang diperlukan (nama lengkap, email, kata sandi).",
             };
         }
@@ -37,15 +38,16 @@ export default defineEventHandler(async (event) => {
         // Mengatur status dan mengembalikan respons sukses
         setResponseStatus(event, 201);
         return {
-            StatusCode: 201,
+            statusCode: 201,
             message: "Pengguna berhasil terdaftar!"
         };
     } catch (error: any) {
         // Menangani error
-        setResponseStatus(event, 500);
+        const {statusCode, message} = errorHandlingTransfrom(error);
+        setResponseStatus(event, statusCode);
         return {
-            StatusCode: 500,
-            message: error.message || "Terjadi kesalahan pada server.",
-        };
+            statusCode,
+            message,
+        }
     }
 });

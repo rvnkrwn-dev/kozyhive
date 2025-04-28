@@ -1,4 +1,4 @@
-import { Address } from '~/server/models/Address';
+import { Kost } from '~/server/models/Kost';
 import {errorHandlingTransfrom} from "~/server/utils/errorHandlingTransfrom";
 
 export default defineEventHandler(async (event) => {
@@ -21,22 +21,22 @@ export default defineEventHandler(async (event) => {
             return { statusCode: 403, message: 'Halaman dan ukuran halaman harus berupa bilangan bulat positif.' };
         }
 
-        // Ambil data Address
-        const address = await Address.getAll(page, pagesize);
+        // Ambil data Kost
+        const address = await Kost.getAll(page, pagesize);
 
         // Hitung total halaman
-        const totalAddresss = await Address.countAll();
-        const totalPages = Math.ceil(totalAddresss / pagesize);
+        const totalKosts = await Kost.countAll();
+        const totalPages = Math.ceil(totalKosts / pagesize);
 
         // Buat URL untuk prev dan next
-        const baseUrl = "/api/auth/address";
+        const baseUrl = "/api/kosts";
         const prevPage = page > 1 ? `${baseUrl}?page=${page - 1}&pagesize=${pagesize}` : null;
         const nextPage = page < totalPages ? `${baseUrl}?page=${page + 1}&pagesize=${pagesize}` : null;
 
         // Return hasil data
         return {
             statusCode: 200,
-            message: 'Address berhasil dikembalikan!',
+            message: 'Kost berhasil dikembalikan!',
             data: address,
             totalPages,
             prev: prevPage,

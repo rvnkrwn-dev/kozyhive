@@ -1,5 +1,5 @@
 import { prisma } from "~/server/config/prisma";
-import { RegisterRequest, RegisterResponse } from "~/server/types/AuthType";
+import {RegisterRequest, RegisterResponse, UpdateRequest} from "~/server/types/AuthType";
 import { Role, UserStatus } from "~/server/types/TypesModel";
 
 export class User {
@@ -87,6 +87,30 @@ export class User {
 
     static countUsers = () => {
         return prisma.user.count();
+    };
+
+    static update = async (id: number, data: UpdateRequest) => {
+        return prisma.user.update({
+            where: { id },
+            data: {
+                email: data.email,
+                full_name: data.full_name,
+                username: data.username,
+                role: data.role,
+                user_status: data.user_status,
+                image_url: data.image_url,
+
+
+            },
+            select: {
+                id: true,
+                full_name: true,
+                username: true,
+                email: true,
+                role: true,
+                user_status: true,
+            }
+        });
     };
 
     static searchUser = (search: string) => {

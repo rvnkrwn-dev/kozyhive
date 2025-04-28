@@ -1,4 +1,4 @@
-import { Address } from '~/server/models/Address';
+import { Wishlist } from '~/server/models/Wishlist';
 import {errorHandlingTransfrom} from "~/server/utils/errorHandlingTransfrom";
 
 export default defineEventHandler(async (event) => {
@@ -21,12 +21,12 @@ export default defineEventHandler(async (event) => {
             return { statusCode: 403, message: 'Halaman dan ukuran halaman harus berupa bilangan bulat positif.' };
         }
 
-        // Ambil data Address
-        const address = await Address.getAll(page, pagesize);
+        // Ambil data Wishlist
+        const address = await Wishlist.getAll(page, pagesize);
 
         // Hitung total halaman
-        const totalAddresss = await Address.countAll();
-        const totalPages = Math.ceil(totalAddresss / pagesize);
+        const totalWishlists = await Wishlist.countAll();
+        const totalPages = Math.ceil(totalWishlists / pagesize);
 
         // Buat URL untuk prev dan next
         const baseUrl = "/api/auth/address";
@@ -36,7 +36,7 @@ export default defineEventHandler(async (event) => {
         // Return hasil data
         return {
             statusCode: 200,
-            message: 'Address berhasil dikembalikan!',
+            message: 'Wishlist berhasil dikembalikan!',
             data: address,
             totalPages,
             prev: prevPage,
