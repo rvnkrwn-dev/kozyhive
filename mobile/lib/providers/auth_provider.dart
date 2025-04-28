@@ -40,6 +40,7 @@ class AuthProvider with ChangeNotifier {
       });
       return response.data;
     } on DioException catch (e) {
+      print(e);
       return {
         'error': e.response?.data ?? 'Terjadi kesalahan saat registrasi'
       };
