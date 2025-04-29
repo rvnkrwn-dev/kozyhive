@@ -84,6 +84,7 @@ export interface AddressResponse {
 export interface KostRequest {
     slug: string;
     title: string;
+    description: string;
     price: number;
     type: KostType; // Menggunakan enum dari TypeScript
     ratings: number;

@@ -102,6 +102,7 @@ export class Kost {
                 data: {
                     slug: data.slug,
                     title: data.title,
+                    description: data.description,
                     price: data.price,
                     type: data.type,
                     ratings: data.ratings,
@@ -186,46 +187,141 @@ export class Kost {
 
     // Get Kost by ID
     static async getById(id: number) {
-        const kost = await prisma.kost.findUnique({
-            where: { id },
-        });
+            // Query untuk mendapatkan data Kost berdasarkan ID
+            const kost = await prisma.kost.findUnique({
+                where: { id },
+                include: { // Gunakan include untuk relasi yang ingin disertakan
+                    address: {
+                        select: {
+                            id: true,
+                            street_name: true,
+                            street_number: true,
+                            village_name: true,
+                            city: true,
+                            state: true,
+                            zip: true,
+                        },
+                    },
+                    facilitiesRoom: {
+                        select: {
+                            id: true,
+                            ac: true,
+                            meja: true,
+                            lemari: true,
+                            kursi: true,
+                            wifi: true,
+                        },
+                    },
+                    facilitiesToilet: {
+                        select: {
+                            id: true,
+                            kamar_mandi: true,
+                            shower: true,
+                            kloset: true,
+                            air_panas: true,
+                        },
+                    },
+                },
+            });
 
-        if (!kost) return null;
+            // Jika Kost tidak ditemukan, kembalikan null dengan pesan
+            if (!kost) {
+                return {
+                    code: 404,
+                    message: "Kost tidak ditemukan.",
+                    data: null,
+                };
+            }
 
-        return {
-            id: kost.id,
-            slug: kost.slug,
-            title: kost.title,
-            price: kost.price,
-            type: kost.type,
-            ratings: kost.ratings,
-            pengaturan_khusus: kost.pengaturan_khusus,
-            owner_id: kost.owner_id,
-            created_at: kost.created_at,
-            updated_at: kost.updated_at,
-        };
-    }
+            // Kembalikan data Kost dengan struktur yang jelas
+            return {
+                code: 200,
+                message: "Kost berhasil ditemukan.",
+                data: {
+                    id: kost.id,
+                    slug: kost.slug,
+                    title: kost.title,
+                    price: kost.price,
+                    type: kost.type,
+                    ratings: kost.ratings,
+                    pengaturan_khusus: kost.pengaturan_khusus,
+                    owner_id: kost.owner_id,
+                    created_at: kost.created_at,
+                    updated_at: kost.updated_at,
+                    address: kost.address,
+                    facilitiesRoom: kost.facilitiesRoom,
+                    facilitiesToilet: kost.facilitiesToilet,
+                },
+            };
+        }
+
+
 
     // Get all Kost with pagination
-    static getAll = async (page: number, pagesize: number) => {
+    // Get all Kost with pagination and category filter
+    static getAll = async (page: number, pagesize: number, category?: string | null, longtitude?: number | null, latitude?: number | null) => {
         const skip = (page - 1) * pagesize; // Hitung data yang dilewatkan
         const take = pagesize; // Jumlah data per halaman
 
-        return prisma.kost.findMany ({
+        // Query dasar
+        let queryOptions: any = {
+            skip,
+            take,
             select: {
                 id: true,
                 slug: true,
                 title: true,
                 price: true,
                 type: true,
-                ratings:  true,
-                pengaturan_khusus:  true,
-                owner_id:  true,
-                created_at:  true,
+                ratings: true,
+                pengaturan_khusus: true,
+                owner_id: true,
+                created_at: true,
                 updated_at: true,
-            }
-        });
-    }
+                address: {
+                    select: {
+                        id: true,
+                        street_name: true,
+                        street_number: true,
+                        village_name: true,
+                        city: true,
+                        state: true,
+                        zip: true,
+                    },
+                },
+            },
+        };
+
+        // Tambahkan filter berdasarkan kategori menggunakan switch case
+        switch (category) {
+            case "top":
+                queryOptions.orderBy = { ratings: "desc" }; // Urutkan berdasarkan rating tertinggi
+                break;
+            case "best-offers":
+                queryOptions.where = { price: { lte: 1000000 } }; // Filter dengan harga di bawah 1 juta
+                break;
+            case "most-recents":
+                queryOptions.orderBy = { created_at: "desc" }; // Urutkan berdasarkan tanggal terbaru
+                break;
+            case "recommended":
+                if (longtitude && latitude) {
+                    queryOptions.where = {
+                        AND: [
+                            { address: { latitude: { near: latitude } } },
+                            { address: { longtitude: { near: longtitude } } },
+                        ],
+                    };
+                }
+                break;
+            default:
+                // Tanpa filter khusus
+                break;
+        }
+
+        // Ambil data dari database menggunakan Prisma
+        return await prisma.kost.findMany(queryOptions);
+    };
+
 
     // Update Kost by ID
     static async update(id: number, data: any) {
